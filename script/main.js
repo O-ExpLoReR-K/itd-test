@@ -27,11 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cardElement) {
           cardElement.classList.add('flipped')
           cardElement.setAttribute('data-selected', 'true')
+          cardElement.style.borderColor = 'red' // Устанавливаем красный бордер при восстановлении
           const newTextElement = document.createElement('div')
           newTextElement.classList.add('streamer-text')
           newTextElement.textContent = cardText
           newTextElement.setAttribute('data-card', cardText)
-          newTextElement.style.borderColor = '#fff' // Устанавливаем белый бордер при восстановлении
+          newTextElement.style.borderColor = '#fff' // Устанавливаем белый бордер для текста при восстановлении
           streamerElement.appendChild(newTextElement)
         }
       })
@@ -60,7 +61,7 @@ document.querySelectorAll('.streamer').forEach(function (streamer) {
     const streamerName = streamer.getAttribute('data-name')
     clickCounts[streamerName] += 1
 
-    // Проверяем, если кликов больше или равно 5, очищаем надписи
+    // Проверяем, если кликов больше или равно 5, очищаем надписи и сбрасываем бордеры карточек
     if (clickCounts[streamerName] >= 5) {
       streamer
         .querySelectorAll('.streamer-text')
@@ -74,11 +75,12 @@ document.querySelectorAll('.streamer').forEach(function (streamer) {
       delete savedCards[streamerName]
       localStorage.setItem('selectedCards', JSON.stringify(savedCards))
 
-      // Сбрасываем состояние карточек
+      // Сбрасываем состояние карточек и бордеры
       document.querySelectorAll('.card').forEach(function (card) {
         if (card.getAttribute('data-selected') === 'true') {
           card.removeAttribute('data-selected')
           card.classList.remove('flipped')
+          card.style.borderColor = '#fff' // Сбрасываем бордер на белый
         }
       })
     }
@@ -95,7 +97,7 @@ document.querySelectorAll('.card').forEach(function (card) {
     // Проверяем, если у стримера уже есть 2 текста
     const streamerTexts = selectedStreamer.querySelectorAll('.streamer-text')
     if (streamerTexts.length >= 2) {
-      alert('Нельзя добавить больше 2 стримеров в команду')
+      alert('Нельзя добавить больше 2 текстов под стримером!')
       return
     }
 
