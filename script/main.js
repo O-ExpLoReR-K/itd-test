@@ -97,7 +97,7 @@ document.querySelectorAll('.card').forEach(function (card) {
     // Проверяем, если у стримера уже есть 2 текста
     const streamerTexts = selectedStreamer.querySelectorAll('.streamer-text')
     if (streamerTexts.length >= 2) {
-      alert('Нельзя добавить больше 2 текстов под стримером!')
+      alert('Нельзя добавить больше 2 стримеров')
       return
     }
 
