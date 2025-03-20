@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
           newTextElement.classList.add('streamer-text')
           newTextElement.textContent = cardText
           newTextElement.setAttribute('data-card', cardText)
+          newTextElement.style.borderColor = '#fff' // Устанавливаем белый бордер при восстановлении
           streamerElement.appendChild(newTextElement)
         }
       })
@@ -43,6 +44,12 @@ document.querySelectorAll('.streamer').forEach(function (streamer) {
 
   streamer.addEventListener('click', function () {
     document.querySelectorAll('.streamer').forEach(function (s) {
+      if (s.classList.contains('selected')) {
+        // Устанавливаем белый бордер для всех streamer-text под предыдущим стримером
+        s.querySelectorAll('.streamer-text').forEach(function (textElement) {
+          textElement.style.borderColor = '#fff'
+        })
+      }
       s.classList.remove('selected')
     })
     streamer.classList.add('selected')
@@ -84,6 +91,14 @@ document.querySelectorAll('.card').forEach(function (card) {
       alert('Сначала выберите стримера!')
       return // Если стример не выбран, ничего не делаем
     }
+
+    // Проверяем, если у стримера уже есть 2 текста
+    const streamerTexts = selectedStreamer.querySelectorAll('.streamer-text')
+    if (streamerTexts.length >= 2) {
+      alert('Нельзя добавить больше 2 стримеров в команду')
+      return
+    }
+
     card.classList.toggle('flipped')
     const cardBackText = card.querySelector('.card-back').textContent
 
@@ -105,6 +120,7 @@ document.querySelectorAll('.card').forEach(function (card) {
         selectedStreamer.appendChild(newTextElement) // Добавляем текст под streamer-name
       }
       card.setAttribute('data-selected', 'true') // Отмечаем карточку как выбранную
+      card.style.borderColor = 'red' // Устанавливаем красный бордер для выбранной карточки
 
       // Сохранение выбранных карточек в localStorage
       const savedCards = JSON.parse(localStorage.getItem('selectedCards')) || {}
@@ -116,6 +132,7 @@ document.querySelectorAll('.card').forEach(function (card) {
       localStorage.setItem('selectedCards', JSON.stringify(savedCards))
     } else {
       card.removeAttribute('data-selected') // Снимаем отметку с карточки
+      card.style.borderColor = '#fff' // Устанавливаем белый бордер для невыбранной карточки
 
       // Обновляем localStorage
       const savedCards = JSON.parse(localStorage.getItem('selectedCards')) || {}
